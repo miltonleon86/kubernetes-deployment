@@ -1,0 +1,9 @@
+# Define or paste the content of your docker-compose file here
+# to get in execute in you console:
+# docker-compose run app
+version: '3'
+
+services:
+  app:
+    image: miltonleon86/kubernetes-gitlab-deployment
+    container_name: release

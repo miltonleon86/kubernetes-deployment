@@ -1,0 +1,21 @@
+#gitlab-ci 
+image: docker:latest
+
+services:
+  - docker:dind
+
+variables:
+      kube_config: 'paste here your kube_config secret defined on gitlab secret variables'
+
+stages:
+  - general_release  
+
+general_release:
+  stage: general_release
+  script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    - echo ${kube_config} | base64 -d >> config
+    - docker build -t $CI_REGISTRY_IMAGE:release . -f Dockerfile
+    - docker tag $CI_REGISTRY_IMAGE:release $CI_REGISTRY_IMAGE:release
+    - docker push $CI_REGISTRY_IMAGE:release
+
